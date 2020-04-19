@@ -161,7 +161,8 @@ final class Type
      * @param $argument
      * @param array $types
      * @param string $name
-     * @param string|null $msg
+     * @param bool $nameAsMsg
+     * @throws \InvalidArgumentException
      */
     public static function enforce($argument, array $types, string $name, bool $nameAsMsg = false) : void
     {
