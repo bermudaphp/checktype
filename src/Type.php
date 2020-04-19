@@ -17,7 +17,7 @@ final class Type
     public const string = 'string';
     public const resource = 'resource';
     public const callable = 'callable';
-    public const float = 'float';
+    public const float = 'callable';
     public const null = 'null';
 
     private function __construct()
@@ -155,6 +155,59 @@ final class Type
         }
 
         return false;
+    }
+
+    /**
+     * @param $var
+     * @param string|string[] $classes
+     * @param string $name
+     * @param bool $nameAsMsg
+     */
+    public static function subclassOf($var, $classes, string $name, bool $nameAsMsg = false) : void
+    {
+        if (!is_string($var))
+        {
+            goto build;
+        }
+
+        $classes = (array) $classes;
+
+        foreach ($classes as &$class)
+        {
+            if (is_subclass_of($var, $class = (string) $class))
+            {
+                return;
+            }
+        }
+
+        build:
+
+        if (!$nameAsMsg)
+        {
+            $msg = 'Argument [' . $name . '] passed to ';
+
+            $trace = end(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS	));
+
+            if (array_key_exists('class', $trace))
+            {
+                $msg .= $trace['class'] . '::';
+            }
+
+            $msg .= $trace['function'];
+            $msg .= ' must be subclass of ';
+
+            foreach ($classes as $class)
+            {
+                $msg .= $glue . $class;
+                $glue = '|';
+            }
+
+            $msg .= ' ' . Type::gettype($var, true);
+            $msg .= ' given.';
+        }
+
+        throw new \InvalidArgumentException($msg ?? $name);
+
     }
 
     /**
