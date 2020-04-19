@@ -17,7 +17,7 @@ final class Type
     public const string = 'string';
     public const resource = 'resource';
     public const callable = 'callable';
-    public const float = 'callable';
+    public const float = 'float';
     public const null = 'null';
 
     private function __construct()
