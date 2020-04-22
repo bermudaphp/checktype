@@ -21,7 +21,7 @@ final class Type
     public const null = 'null';
     public const callableAsObject = 1;
     public const objectAsClass = 2;
-    
+
 
     private function __construct()
     {
@@ -70,7 +70,7 @@ final class Type
             {
                 return self::object;
             }
-            
+
             return self::callable;
         }
 
@@ -210,7 +210,7 @@ final class Type
                 $glue = '|';
             }
 
-            $msg .= ' ' . Type::gettype($var, true);
+            $msg .= ' ' . Type::gettype($var, self::objectAsClass);
             $msg .= ' given.';
         }
 
@@ -265,7 +265,7 @@ final class Type
                 $msg .= ' of the ' . $types[0] . ' type, ';
             }
 
-            $msg .= Type::gettype($argument, true);
+            $msg .= Type::gettype($argument, self::objectAsClass);
             $msg .= ' given.';
         }
 
