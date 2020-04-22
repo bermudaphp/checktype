@@ -114,7 +114,7 @@ final class Type
 
         if ($concrete != null)
         {
-            return strcasecmp($var, $concrete) != 0;
+            return strcasecmp($var, $concrete) == 0;
         }
 
         return true;
