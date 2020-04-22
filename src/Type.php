@@ -17,8 +17,11 @@ final class Type
     public const string = 'string';
     public const resource = 'resource';
     public const callable = 'callable';
-    public const float = 'callable';
+    public const float = 'float';
     public const null = 'null';
+    public const callableAsObject = 1;
+    public const objectAsClass = 2;
+    
 
     private function __construct()
     {
@@ -28,7 +31,7 @@ final class Type
      * @param $var
      * @return string
      */
-    public static function gettype($var, bool $objectAsClass = false) : string
+    public static function gettype($var, int $flags = 0) : string
     {
 
         if (is_array($var))
@@ -63,6 +66,11 @@ final class Type
 
         if (is_callable($var))
         {
+            if($flags & self::callableAsObject && is_object($var))
+            {
+                return self::object;
+            }
+            
             return self::callable;
         }
 
@@ -73,7 +81,7 @@ final class Type
 
         $type = self::object;
 
-        if ($objectAsClass)
+        if ($flags & self::objectAsClass)
         {
             return get_class($var);
         }
@@ -94,7 +102,7 @@ final class Type
 
         if ($concrete != null)
         {
-            return strcasecmp($var, $concrete) != 0;
+            return strcasecmp($var, $concrete) == 0;
         }
 
         return true;
