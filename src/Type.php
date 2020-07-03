@@ -6,7 +6,7 @@ namespace Bermuda;
 
 /**
  * Class Type
- * @package Lobster
+ * @package Bermuda
  */
 final class Type
 {
