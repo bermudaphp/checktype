@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Lobster;
+namespace Bermuda;
 
 
 /**
@@ -33,7 +33,6 @@ final class Type
      */
     public static function gettype($var, int $flags = 0) : string
     {
-
         if (is_array($var))
         {
             return self::array;
