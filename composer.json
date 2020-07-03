@@ -1,12 +1,12 @@
  {
-    "name": "lobster-php/type",
+    "name": "bermudaphp/checktype",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Lobster\\": "src/"
+            "Bermuda\\Type\\": "src/"
         }
     },
     "require": {
-        "php": ">= 7.2.0"
+        "php": ">= 7.4"
     }
 }
