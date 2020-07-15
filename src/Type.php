@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Bermuda\Type;
+namespace Bermuda\CheckType;
 
 
 /**
