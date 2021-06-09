@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Bermuda\CheckType;
-
 
 /**
  * Class Type
@@ -19,19 +17,15 @@ final class Type
     public const callable = 'callable';
     public const float = 'float';
     public const null = 'null';
+    
     public const callableAsObject = 1;
     public const objectAsClass = 2;
-
-
-    private function __construct()
-    {
-    }
 
     /**
      * @param $var
      * @return string
      */
-    public static function gettype($var, int $flags = 0) : string
+    public static function gettype($var, int $flags = 0): string
     {
         if (is_array($var))
         {
@@ -65,7 +59,7 @@ final class Type
 
         if (is_callable($var))
         {
-            if($flags & self::callableAsObject && is_object($var))
+            if ($flags & self::callableAsObject && is_object($var))
             {
                 return self::object;
             }
@@ -151,7 +145,7 @@ final class Type
      * @param string[] $types
      * @return bool
      */
-    public static function matchMany($var, array $types) : bool
+    public static function matchMany($var, array $types): bool
     {
         foreach ($types as $type)
         {
@@ -165,19 +159,19 @@ final class Type
     }
 
     /**
-     * @param $var
+     * @param string|object $var
      * @param string|string[] $classes
      * @param string $name
      * @param bool $nameAsMsg
      */
-    public static function subclassOf($var, $classes, string $name, bool $nameAsMsg = false) : void
+    public static function subclassOf($var, $classes, string $name, bool $nameAsMsg = false): void
     {
-        if (!is_string($var))
+        if (!is_string($var) && !is_object($var))
         {
-            goto build;
+           thrown new \InvalidArgumentException();
         }
-
-        $classes = (array) $classes;
+        
+        is_array($classes) ?: $classes = [$classes];
 
         foreach ($classes as &$class)
         {
@@ -187,13 +181,11 @@ final class Type
             }
         }
 
-        build:
-
         if (!$nameAsMsg)
         {
             $msg = 'Argument [' . $name . '] passed to ';
 
-            $trace = end(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS	));
+            $trace = end(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
 
             if (array_key_exists('class', $trace))
             {
@@ -224,7 +216,7 @@ final class Type
      * @param bool $nameAsMsg
      * @throws \InvalidArgumentException
      */
-    public static function enforce($argument, array $types, string $name, bool $nameAsMsg = false) : void
+    public static function enforce($argument, array $types, string $name, bool $nameAsMsg = false): void
     {
         if (self::matchMany($argument, $types))
         {
@@ -235,7 +227,7 @@ final class Type
         {
             $msg = 'Argument [' . $name . '] passed to ';
 
-            $trace = end(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS	));
+            $trace = end(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
 
             if (array_key_exists('class', $trace))
             {
@@ -247,16 +239,7 @@ final class Type
 
             if (count($types) > 1)
             {
-                $msg .= ' one of the types [';
-                $glue = '';
-
-                foreach ($types as $type)
-                {
-                    $msg .= $glue . $type;
-                    $glue = '|';
-                }
-
-                $msg .= '], ';
+                $msg .= ' one of the types [' . implode('|', $types) . ']';
             }
 
             else
@@ -264,8 +247,7 @@ final class Type
                 $msg .= ' of the ' . $types[0] . ' type, ';
             }
 
-            $msg .= Type::gettype($argument, self::objectAsClass);
-            $msg .= ' given.';
+            $msg .= Type::gettype($argument, self::objectAsClass) . ' given.';
         }
 
         throw new \InvalidArgumentException($msg ?? $name);
