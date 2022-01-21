@@ -2,10 +2,6 @@
 
 namespace Bermuda\CheckType;
 
-/**
- * Class Type
- * @package Bermuda
- */
 final class Type
 {
     public const array = 'array';
@@ -27,55 +23,45 @@ final class Type
      */
     public static function gettype($var, int $flags = 0): string
     {
-        if (is_array($var))
-        {
+        if (is_array($var)) {
             return self::array;
         }
 
-        if (is_bool($var))
-        {
+        if (is_bool($var)) {
             return self::bool;
         }
 
-        if (is_int($var))
-        {
+        if (is_int($var)) {
             return self::int;
         }
 
-        if (is_string($var))
-        {
+        if (is_string($var)) {
             return self::string;
         }
 
-        if (is_null($var))
-        {
+        if (is_null($var)) {
             return self::null;
         }
 
-        if (is_resource($var))
-        {
+        if (is_resource($var)) {
             return self::resource;
         }
 
-        if (is_callable($var))
-        {
-            if ($flags & self::callableAsObject && is_object($var))
-            {
+        if (is_callable($var)) {
+            if ($flags & self::callableAsObject && is_object($var)) {
                 return self::object;
             }
 
             return self::callable;
         }
 
-        if (is_float($var))
-        {
+        if (is_float($var)) {
             return self::float;
         }
 
         $type = self::object;
 
-        if ($flags & self::objectAsClass)
-        {
+        if ($flags & self::objectAsClass) {
             return get_class($var);
         }
 
@@ -88,13 +74,11 @@ final class Type
      */
     public static function isClass($var, string $concrete = null) : bool
     {
-        if (!(is_string($var) && class_exists($var)))
-        {
+        if (!(is_string($var) && class_exists($var))) {
             return false;
         }
 
-        if ($concrete != null)
-        {
+        if ($concrete != null) {
             return strcasecmp($var, $concrete) == 0;
         }
 
@@ -108,13 +92,11 @@ final class Type
      */
     public static function isInterface($var, string $concrete = null) : bool
     {
-        if (!(is_string($var) && interface_exists($var)))
-        {
+        if (!(is_string($var) && interface_exists($var))) {
             return false;
         }
 
-        if ($concrete != null)
-        {
+        if ($concrete != null) {
             return strcasecmp($var, $concrete) == 0;
         }
 
@@ -130,10 +112,7 @@ final class Type
     {
         $actual = self::gettype($var);
 
-        if ($actual === self::object &&
-            (self::isInterface($type) || self::isClass($type))
-        )
-        {
+        if ($actual === self::object && (self::isInterface($type) || self::isClass($type))) {
             return $var instanceof $type;
         }
 
@@ -147,10 +126,8 @@ final class Type
      */
     public static function matchMany($var, array $types): bool
     {
-        foreach ($types as $type)
-        {
-            if (self::match($var, (string) $type))
-            {
+        foreach ($types as $type) {
+            if (self::match($var, (string) $type)) {
                 return true;
             }
         }
@@ -166,17 +143,14 @@ final class Type
      */
     public static function subclassOf($var, $classes, string $name, bool $nameAsMsg = false): void
     {
-        if (!is_string($var) && !is_object($var))
-        {
+        if (!is_string($var) && !is_object($var)) {
            thrown new \InvalidArgumentException();
         }
         
         is_array($classes) ?: $classes = [$classes];
 
-        foreach ($classes as &$class)
-        {
-            if (is_subclass_of($var, $class = (string) $class))
-            {
+        foreach ($classes as &$class) {
+            if (is_subclass_of($var, $class = (string) $class)){
                 return;
             }
         }
