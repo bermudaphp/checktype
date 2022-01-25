@@ -72,7 +72,7 @@ final class Type
      * @param $var
      * @return bool
      */
-    public static function isClass($var, string $concrete = null) : bool
+    public static function isClass($var, string $concrete = null): bool
     {
         if (!(is_string($var) && class_exists($var))) {
             return false;
@@ -141,12 +141,8 @@ final class Type
      * @param string $name
      * @param bool $nameAsMsg
      */
-    public static function subclassOf($var, $classes, string $name, bool $nameAsMsg = false): void
+    public static function subclassOf(string|object $var, string|array $classes, string $name, bool $nameAsMsg = false): void
     {
-        if (!is_string($var) && !is_object($var)) {
-           thrown new \InvalidArgumentException();
-        }
-        
         is_array($classes) ?: $classes = [$classes];
 
         foreach ($classes as &$class) {
@@ -155,22 +151,19 @@ final class Type
             }
         }
 
-        if (!$nameAsMsg)
-        {
+        if (!$nameAsMsg) {
             $msg = 'Argument [' . $name . '] passed to ';
 
             $trace = end(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
 
-            if (array_key_exists('class', $trace))
-            {
+            if (array_key_exists('class', $trace)) {
                 $msg .= $trace['class'] . '::';
             }
 
             $msg .= $trace['function'];
             $msg .= ' must be subclass of ';
 
-            foreach ($classes as $class)
-            {
+            foreach ($classes as $class) {
                 $msg .= $glue . $class;
                 $glue = '|';
             }
@@ -192,32 +185,25 @@ final class Type
      */
     public static function enforce($argument, array $types, string $name, bool $nameAsMsg = false): void
     {
-        if (self::matchMany($argument, $types))
-        {
+        if (self::matchMany($argument, $types)) {
             return;
         }
 
-        if (!$nameAsMsg)
-        {
+        if (!$nameAsMsg) {
             $msg = 'Argument [' . $name . '] passed to ';
 
             $trace = end(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
 
-            if (array_key_exists('class', $trace))
-            {
+            if (array_key_exists('class', $trace)) {
                 $msg .= $trace['class'] . '::';
             }
 
             $msg .= $trace['function'];
             $msg .= ' must be';
 
-            if (count($types) > 1)
-            {
+            if (count($types) > 1) {
                 $msg .= ' one of the types [' . implode('|', $types) . ']';
-            }
-
-            else
-            {
+            } else {
                 $msg .= ' of the ' . $types[0] . ' type, ';
             }
 
