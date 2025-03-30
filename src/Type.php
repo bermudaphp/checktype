@@ -72,7 +72,7 @@ final class Type
      * @param $var
      * @return bool
      */
-    public static function isClass($var, string $concrete = null): bool
+    public static function isClass($var, ?string $concrete = null): bool
     {
         if (!(is_string($var) && class_exists($var))) {
             return false;
@@ -90,7 +90,7 @@ final class Type
      * @param string|null $concrete
      * @return bool
      */
-    public static function isInterface($var, string $concrete = null) : bool
+    public static function isInterface($var, ?string $concrete = null) : bool
     {
         if (!(is_string($var) && interface_exists($var))) {
             return false;
