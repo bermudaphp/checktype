@@ -1,4 +1,4 @@
-# TypeChecker
+# CheckType
 
 A lightweight PHP library for determining and enforcing variable types.
 
@@ -34,4 +34,17 @@ Install via Composer:
 
 ```bash
 composer require bermudaphp/checktype
+```
 
+## Usage / Использование
+```php
+use Bermuda\CheckType\Type;
+
+$value = 42;
+
+// Determine the type of the variable
+echo Type::getType($value); // Outputs: int
+
+// Enforce allowed types
+Type::enforce(static fn() => 42, [Type::TYPE_CALLABLE|\Closure]);
+```
