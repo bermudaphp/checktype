@@ -46,5 +46,5 @@ $value = 42;
 echo Type::getType($value); // Outputs: int
 
 // Enforce allowed types
-Type::enforce(static fn() => 42, [Type::TYPE_CALLABLE|\Closure]);
+Type::enforce(static fn() => 42, [Type::TYPE_CALLABLE, \Closure::class]);
 ```
