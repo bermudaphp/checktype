@@ -1,4 +1,4 @@
-# Bermuda CheckType
+# TypeChecker
 
 A lightweight PHP library for determining and enforcing variable types.
 
