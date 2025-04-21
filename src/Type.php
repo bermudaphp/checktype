@@ -65,7 +65,7 @@ final class Type
      *
      * @return bool True if $var is a valid class name; false otherwise.
      */
-    public static function isClass($var, ?string $concrete = null): bool
+    public static function isClass(mixed $var, ?string $concrete = null): bool
     {
         if (!is_string($var) || !class_exists($var)) {
             return false;
@@ -129,7 +129,7 @@ final class Type
      */
     public static function matchAny(mixed $var, array $types): bool
     {
-        return array_any($types, fn(string $type) => self::match($var, $type));
+        return array_any($types, static fn(string $type) => Type::match($var, $type));
     }
 
     /**
