@@ -1,12 +1,34 @@
- {
-    "name": "bermudaphp/checktype",
+{
+    "name": "bermudaphp/types",
+    "description": "Runtime type checking and validation library for PHP",
+    "type": "library",
+    "keywords": ["types", "type-checking", "validation", "assertion", "runtime-types"],
     "license": "MIT",
+    "require": {
+        "php": "^8.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
     "autoload": {
         "psr-4": {
-            "Bermuda\\CheckType\\": "src/"
+            "Bermuda\\Stdlib\\": "src/"
         }
     },
-    "require": {
-        "php": "^8.0"
-    }
+    "autoload-dev": {
+        "psr-4": {
+            "Bermuda\\Stdlib\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
